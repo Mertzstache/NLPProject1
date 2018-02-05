@@ -5,7 +5,7 @@
 #****************************************
 # parsejson.py
 # run like:
-# $parsejson.py <json.json>
+# $parsejson.py <filename.json>
 #****************************************
 
 import sys
