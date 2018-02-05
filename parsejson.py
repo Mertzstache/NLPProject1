@@ -1,13 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Getting Frequency Dictionary"""
-
-import sys
-import json
-from pprint import pprint
-#import numpy as np
-#import os
-#import shutil
+"""Printing JSON data"""
 
 #****************************************
 # parsejson.py
@@ -15,6 +8,12 @@ from pprint import pprint
 # $parsejson.py <json.json>
 #****************************************
 
+import sys
+import json
+# from pprint import pprint
+#import numpy as np
+#import os
+#import shutil
 
 def main():
     """main function"""
