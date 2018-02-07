@@ -10,6 +10,7 @@
 
 import sys
 from corpus import Corpus
+from wizard import Wizard
 
 
 # things to think about as a team:
@@ -29,6 +30,11 @@ def main():
     """main function"""
     filename = str(sys.argv[1]) if len(sys.argv) > 1 else "gg2018.json"
     gg_corpus = Corpus(filename)
+
+    wizard = Wizard(gg_corpus)
+    gg_host = wizard.get_host()
+
+    print("The host is:", gg_host)
    
 
 if __name__ == "__main__":

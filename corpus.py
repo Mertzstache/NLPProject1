@@ -13,6 +13,10 @@ class Corpus():
 		self.tweets = list(map(lambda x: Tweet(x), unique_tweets_raw))
 
 
+	def __iter__(self):
+		return iter(self.tweets)
+
+
 	def read_json_data(self, file_path):
 		return json.load(open(file_path))
 
