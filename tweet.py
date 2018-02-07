@@ -9,6 +9,11 @@ class Tweet():
 
 		split_text = text.split()
 
+		
+		# from a machine learning perspective, these are the features
+		# that we are going to be working with
+		# what features matter?
+		self.contains_word_best = self.contains_best(split_text)
 		self.tags = self.process_tags(split_text)
 		self.uppercased = self.process_uppercased(split_text)
 		self.uppercased_2grams = self.process_uppercased_2grams(split_text)
@@ -16,15 +21,26 @@ class Tweet():
 		# print(self.uppercased_2grams)
 
 
+
+
 	# the stuff in here really should only be for pre-processing (aka caching)
 	# all statistical and counting junk should exist in an exterior class
 
+
+
+	# does this tweet have the word "best" in it?
+	def contains_best(self, text):
+		return "best" in text
+
+	# extract a list of twitter hashtags from this tweet
 	def process_tags(self, text):
 		return list(filter(lambda x: x.startswith('#'), text))
 
+	# extract all uppercased tokens
 	def process_uppercased(self, text):
 		return list(filter(lambda x: x[0].isupper(), text))
 
+	# extract all sets of two tokens in a row that are uppercased; looking for proper names of people
 	def process_uppercased_2grams(self, text):
 		return list(filter(lambda x: x[0][0].isupper() and x[1][0].isupper(), ngrams(text, 2)))
 
