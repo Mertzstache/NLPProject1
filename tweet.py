@@ -5,18 +5,18 @@ from util import ngrams
 class Tweet():
 
 	def __init__(self, text):
-		self.text = text
 
-		split_text = text.split()
+		self.text = text
+		self.split_text = text.split()
 
 		
 		# from a machine learning perspective, these are the features
 		# that we are going to be working with
 		# what features matter?
-		self.contains_word_best = self.contains_best(split_text)
-		self.tags = self.process_tags(split_text)
-		self.uppercased = self.process_uppercased(split_text)
-		self.uppercased_2grams = self.process_uppercased_2grams(split_text)
+		self.contains_word_best = self.contains_best(self.split_text)
+		self.tags = self.process_tags(self.split_text)
+		self.uppercased = self.process_uppercased(self.split_text)
+		self.uppercased_2grams = self.process_uppercased_2grams(self.split_text)
 
 		# print(self.uppercased_2grams)
 
@@ -46,4 +46,7 @@ class Tweet():
 
 
 
-
+	# def process_link_in_tweet(self, text):
+		# m = re.search('https?:\/\/(www\.)?', elem['text']) #'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)'
+        # if m:
+        #     m.group(0)

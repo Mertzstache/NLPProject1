@@ -3,39 +3,33 @@
 """Printing JSON data"""
 
 #****************************************
-# parsejson.py
+# main.py
 # run like:
-# $parsejson.py <filename.json>
+# $main.py <filename.json>
 #****************************************
 
 import sys
-# import json
-# import re
-#from pprint import pprint
-#import numpy as np
-#import os
-#import shutil
-
 from corpus import Corpus
+
+
+# things to think about as a team:
+# ensemble methods will have the best performance. we can put as much 
+# engineering time as we want into this project. what kinds of things 
+# should we focus on?
+
+# start simple, build up from there to improve performance. let's get 
+# a baseline up and running if we can do that quickly we can start playing 
+# around with more fun things (statistical methods and whatnot)
+
+# the baseline should just be simple rules (E.G. a search for "best 
+# picture award is ?some")
+
 
 def main():
     """main function"""
-    filename = "gg2018.json" # str(sys.argv[1])
+    filename = str(sys.argv[1]) if len(sys.argv) > 1 else "gg2018.json"
     gg_corpus = Corpus(filename)
-
-
-    # data = json.load(open(filename))
-        # if "host" in elem['text'].lower():
-        #     print(idx, elem['text'], "\n\n")
-
-        # print(elem['text'])
-        # m = re.search('https?:\/\/(www\.)?', elem['text']) #'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)'
-        # if m:
-        #     m.group(0)
-        #     print(elem['text'])
-        #     input("Found a tweet with a link! Press Enter to continue...")
-   # pprint(data)
-
+   
 
 if __name__ == "__main__":
     main()

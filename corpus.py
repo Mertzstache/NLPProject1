@@ -3,6 +3,7 @@ from tweet import Tweet
 
 class Corpus():
 
+	# a list of Tweet objects
 	tweets = None
 
 	def __init__(self, file_path):
@@ -16,7 +17,9 @@ class Corpus():
 		return json.load(open(file_path))
 
 
-
+	# there are a lot of redundant tweets (retweets). we can just ignore these
+	# and save processing time. I don't think their frequencies encode any useful
+	# signals
 	def get_unique_tweets(self, json_data):
 
 		unique_tweets = set()
