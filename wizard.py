@@ -45,6 +45,9 @@ class Wizard():
 
 		corpus = self.corpus.filter(lambda x: x.contains_word_partial('best'))
 
+		for tweet in corpus:
+			print(tweet)
+
 		
 		
 

@@ -10,4 +10,4 @@ class Corpus():
 	# filter this corpus and return the subset
 	# fn must be a boolean function on Tweet (should be defined in the Tweet subclass)
 	def filter(self, fn):
-		return Corpus(filter(fn), self)
+		return Corpus(filter(fn, self))
