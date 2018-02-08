@@ -27,14 +27,6 @@ class Wizard():
 		return cand_counter.most_common(1)[0][0]
 
 
-
-	def get_info_for_award(self):
-		pass
-
-
-
-
-
 	def get_award_names(self):
 		
 		# candidates = []
@@ -47,6 +39,13 @@ class Wizard():
 
 		return AWARD_NAMES_MOTION_PICTURE + AWARD_NAMES_TELEVISION
 
+
+
+	def get_info_for_award(self, award_name):
+
+		corpus = self.corpus.filter(lambda x: x.contains_word_partial('best'))
+
+		
 		
 
 

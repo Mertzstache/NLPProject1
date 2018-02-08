@@ -37,8 +37,12 @@ def main():
 
 
     award_list = wizard.get_award_names()
-
     print(award_list)
+
+
+    award_info = wizard.get_info_for_award('best director')
+
+    
    
 
 if __name__ == "__main__":

@@ -78,6 +78,3 @@ class Tweet():
 				return True
 
 		return None
-
-
-
