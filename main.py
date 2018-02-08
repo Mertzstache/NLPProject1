@@ -32,9 +32,8 @@ def main():
     gg_corpus = Corpus(filename)
 
     wizard = Wizard(gg_corpus)
-    gg_host = wizard.get_host()
-
-    print("The host is:", gg_host)
+    # gg_host = wizard.get_host()
+    wizard.get_award_names()
    
 
 if __name__ == "__main__":

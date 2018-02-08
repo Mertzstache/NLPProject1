@@ -28,7 +28,14 @@ class Wizard():
 
 
 	def get_award_names(self):
-		pass
+		
+		candidates = []
+
+		for tweet in self.corpus:
+			if tweet.contains_word_partial("present"):
+				print(tweet)
+
+		
 
 
 	def get_presenters(self):

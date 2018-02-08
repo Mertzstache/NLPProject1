@@ -23,6 +23,9 @@ class Tweet():
 
 
 
+	def __str__(self):
+		return self.text
+
 
 	# ------------------------------------------------------------------------
 	# the stuff in here really should only be for pre-processing (aka caching)
