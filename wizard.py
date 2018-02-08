@@ -1,3 +1,4 @@
+from encoded_knowledge import *
 from collections import Counter
 
 class Wizard():
@@ -27,25 +28,36 @@ class Wizard():
 
 
 
+	def get_info_for_award(self):
+		pass
+
+
+
+
+
 	def get_award_names(self):
 		
-		candidates = []
+		# candidates = []
 
-		for tweet in self.corpus:
-			if tweet.contains_word_partial("present"):
-				print(tweet)
+		# for tweet in self.corpus:
+		# 	if tweet.contains_word_partial("present"):
+		# 		print(tweet)
+
+		# let's hardcode these for now. we can revisit later if we have time
+
+		return AWARD_NAMES_MOTION_PICTURE + AWARD_NAMES_TELEVISION
 
 		
 
 
-	def get_presenters(self):
+	def __get_presenters(self, award_name):
 		pass
 
 
-	def get_nominees(self):
+	def __get_nominees(self, award_name):
 		pass
 
 
-	def get_winners(self):
+	def __get_winners(self, award_name):
 		pass
 

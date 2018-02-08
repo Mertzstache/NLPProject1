@@ -9,7 +9,7 @@
 #****************************************
 
 import sys
-from corpus import Corpus
+from jsonreader import create_corpus_from_file
 from wizard import Wizard
 
 
@@ -29,11 +29,16 @@ from wizard import Wizard
 def main():
     """main function"""
     filename = str(sys.argv[1]) if len(sys.argv) > 1 else "gg2018.json"
-    gg_corpus = Corpus(filename)
+    gg_corpus = create_corpus_from_file(filename)
 
     wizard = Wizard(gg_corpus)
-    # gg_host = wizard.get_host()
-    wizard.get_award_names()
+    gg_host = wizard.get_host()
+    print("host is:", gg_host)
+
+
+    award_list = wizard.get_award_names()
+
+    print(award_list)
    
 
 if __name__ == "__main__":
