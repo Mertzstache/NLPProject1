@@ -27,3 +27,18 @@ class Wizard():
 
 
 
+	def get_award_names(self):
+		pass
+
+
+	def get_presenters(self):
+		pass
+
+
+	def get_nominees(self):
+		pass
+
+
+	def get_winners(self):
+		pass
+
