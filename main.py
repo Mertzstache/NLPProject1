@@ -43,7 +43,7 @@ def main():
 	#  	award_info = wizard.get_info_for_award(award_tokens)
 	#  	print(award_tokens, award_info)
 
-	# award_info = wizard.get_info_for_award(['best', 'actor'])
+	award_info = wizard.get_info_for_award(['best', 'actor'])
 	# print(award_info)
 
 

@@ -24,9 +24,7 @@ class Wizard():
 		self.corpus_contain_best_present = self.corpus_contain_best.filter(
 			lambda x: x.contains_word_partial('present'))
 
-		# free up memory, this one was just stepping stone
-		self.corpus_contain_best = None
-
+		
 
 	# this just takes all tweets that contain the substring "host"
 	# it then takes all of the capitalized 2grams that we filtered before
@@ -73,24 +71,29 @@ class Wizard():
 
 	def __get_presenters(self, award_tokens):
 
-		corpus = self.corpus_contain_best_present.filter(lambda x: x.contains_all(award_tokens))
+		corpus = self.corpus_contain_best.filter_re_search('\w+\W\w+\W(won|wins)')
 
 		for tweet in corpus:
-		 	print(tweet.uppercased_2grams, "\n")
+			print(tweet, "\n")
 
-		candidates = []
+		# corpus = self.corpus_contain_best_present.filter(lambda x: x.contains_all(award_tokens))
 
-		for tweet in corpus:
-			candidates += map(lambda x: ' '.join(x), tweet.uppercased_2grams)
+		# for tweet in corpus:
+		#  	print(tweet.uppercased_2grams, "\n")
+
+		# candidates = []
+
+		# for tweet in corpus:
+		# 	candidates += map(lambda x: ' '.join(x), tweet.uppercased_2grams)
 
 
-		cand_counter = Counter(candidates)
-		top_list = cand_counter.most_common(10)
+		# cand_counter = Counter(candidates)
+		# top_list = cand_counter.most_common(10)
 
-		if top_list:
-			return top_list[0][0]
-		else:
-			return 'none'
+		# if top_list:
+		# 	return top_list[0][0]
+		# else:
+		# 	return 'none'
 
 
 
