@@ -62,8 +62,9 @@ class Tweet():
 
 	# --------------------------------------------------------------------------------------
 	# everything below this line should be considered one-off, in other words you're pretty 
-	# sure this function is only going to be called one or two times. This saves us memory 
-	# (maybe we don't care, we can just download more?) https://downloadmoreram.com/
+	# sure this function is only going to be called one or two times (for a particular arglist. 
+	# This saves us memory (maybe we don't care, we can just download more?) 
+	# https://downloadmoreram.com/
 	# --------------------------------------------------------------------------------------
 
 	# let's say we're looking for the word host, well maybe hostess is the same
@@ -78,3 +79,29 @@ class Tweet():
 				return True
 
 		return None
+
+	def contains_word(self, word):
+		for token in self.split_text_lower:
+			if token == word:
+				return True
+
+		return None
+
+
+	def not_contains_word(self, word):
+		for token in self.split_text_lower:
+			if token == word:
+				return None
+
+		return True
+
+
+	# careful when using this, might overconstrain search
+	# should be fine if our corpus is big enough, but need to
+	# run empirical tests
+	def contains_all(self, word_list):
+		for needle in word_list:
+			if not self.contains_word(needle.lower()):
+				return None
+
+		return True

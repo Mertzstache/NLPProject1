@@ -7,6 +7,25 @@ class Wizard():
 
 	def __init__(self, corpus):
 		self.corpus = corpus
+		self.cache_useful_corpora()
+
+
+	# memory grows with log of original corpora size, shoudl be ok
+	# this method caches some often used subsets of corpus (we query these subsets
+	# for each award that we are looking at)
+	def cache_useful_corpora(self):
+
+		self.corpus_contain_best = self.corpus.filter(
+			lambda x: x.contains_word_partial('best'))
+		self.corpus_contain_best_nominee = self.corpus_contain_best.filter(
+			lambda x: x.contains_word_partial('nominee'))
+		self.corpus_contain_best_win = self.corpus_contain_best.filter(
+			lambda x: x.contains_word_partial('win'))
+		self.corpus_contain_best_present = self.corpus_contain_best.filter(
+			lambda x: x.contains_word_partial('present'))
+
+		# free up memory
+		self.corpus_contain_best = None
 
 
 	# this just takes all tweets that contain the substring "host"
@@ -24,6 +43,7 @@ class Wizard():
 		cand_counter = Counter(candidates)
 		# print(cand_counter.most_common(10))
 
+		# get the highest counted object, and extract the string out of it
 		return cand_counter.most_common(1)[0][0]
 
 
@@ -37,23 +57,41 @@ class Wizard():
 
 		# let's hardcode these for now. we can revisit later if we have time
 
-		return AWARD_NAMES_MOTION_PICTURE + AWARD_NAMES_TELEVISION
+		return ALL_AWARDS_LOWER_FILTERED
 
 
 
-	def get_info_for_award(self, award_name):
+	def get_info_for_award(self, award_tokens):
 
-		corpus = self.corpus.filter(lambda x: x.contains_word_partial('best'))
+		return ('presenter', self.__get_presenters(award_tokens))
+		# self.__get_nominees(award_name)
+		# self.__get_winners(award_name)
+
+		
+		
+
+
+	def __get_presenters(self, award_tokens):
+
+		corpus = self.corpus_contain_best_present.filter(lambda x: x.contains_all(award_tokens))
 
 		for tweet in corpus:
-			print(tweet)
+		 	print(tweet.uppercased_2grams, "\n")
 
-		
-		
+		candidates = []
+
+		for tweet in corpus:
+			candidates += map(lambda x: ' '.join(x), tweet.uppercased_2grams)
 
 
-	def __get_presenters(self, award_name):
-		pass
+		cand_counter = Counter(candidates)
+		top_list = cand_counter.most_common(10)
+
+		if top_list:
+			return top_list[0][0]
+		else:
+			return 'none'
+
 
 
 	def __get_nominees(self, award_name):

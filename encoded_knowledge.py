@@ -1,4 +1,15 @@
 
+from util import remove_stopwords
+
+STOP_WORDS = [
+'for',
+'in',
+'-',
+'–',
+'or',
+'a'
+]
+
 AWARD_NAMES_MOTION_PICTURE = [
 'Best Motion Picture – Drama', 
 'Best Motion Picture – Musical or Comedy',
@@ -14,7 +25,7 @@ AWARD_NAMES_MOTION_PICTURE = [
 'Best Original Song',
 'Best Foreign Language Film',
 'Best Animated Feature Film',
-'Cecil B. DeMille Award for Lifetime Achievement in Motion Pictures'
+'Cecil DeMille Award for Lifetime Achievement in Motion Pictures'
 ]
 
 
@@ -29,5 +40,11 @@ AWARD_NAMES_TELEVISION = [
 'Best Actor in a Limited Series or Motion Picture made for Television',
 'Best Actress in a Limited Series or Motion Picture made for Television',
 'Best Supporting Actor in a Series, Limited Series or Motion Picture made for Television',
-'Best Supporting Actress in a Series, Limited Series or Motion Picture made for Television'
+'Best Supporting Actress in a Series Limited Series or Motion Picture made for Television'
 ]
+
+
+ALL_AWARDS = AWARD_NAMES_MOTION_PICTURE + AWARD_NAMES_TELEVISION
+ALL_AWARDS_LOWER = [award_name.lower().split() for award_name in ALL_AWARDS]
+ALL_AWARDS_LOWER_FILTERED = [remove_stopwords(award_name, STOP_WORDS) for award_name in ALL_AWARDS_LOWER]
+
