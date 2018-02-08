@@ -10,7 +10,7 @@ class Wizard():
 		self.cache_useful_corpora()
 
 
-	# memory grows with log of original corpora size, shoudl be ok
+	# memory grows with log of original corpora size, should be ok
 	# this method caches some often used subsets of corpus (we query these subsets
 	# for each award that we are looking at)
 	def cache_useful_corpora(self):
@@ -20,11 +20,11 @@ class Wizard():
 		self.corpus_contain_best_nominee = self.corpus_contain_best.filter(
 			lambda x: x.contains_word_partial('nominee'))
 		self.corpus_contain_best_win = self.corpus_contain_best.filter(
-			lambda x: x.contains_word_partial('win'))
+			lambda x: x.contains_any(['win', 'won', 'wins']))
 		self.corpus_contain_best_present = self.corpus_contain_best.filter(
 			lambda x: x.contains_word_partial('present'))
 
-		# free up memory
+		# free up memory, this one was just stepping stone
 		self.corpus_contain_best = None
 
 

@@ -1,12 +1,19 @@
 import re
+# from nltk import word_tokenize
 
 from util import ngrams
+
+# nlp = spacy.load('en')
+# print("finished loading en data")
 
 class Tweet():
 
 	def __init__(self, text):
 
 		self.text = text
+
+		# self.nltk_text = word_tokenize(text)
+
 		self.text_lower = text.lower()
 
 		self.split_text = self.text.split()
@@ -45,6 +52,10 @@ class Tweet():
 	# extract all uppercased tokens
 	def __process_uppercased(self, text):
 		return list(filter(lambda x: x[0].isupper(), text))
+
+	# returns a list of 2grams from this tweet
+	def __process_2grams(self, text):
+		return list(ngrams(text, 2))
 
 	# extract all sets of two tokens in a row that are uppercased; looking for proper names of people
 	def __process_uppercased_2grams(self, text):
@@ -96,6 +107,10 @@ class Tweet():
 		return True
 
 
+	def re_search(self, pattern):
+		return re.search(pattern, self.text)
+
+
 	# careful when using this, might overconstrain search
 	# should be fine if our corpus is big enough, but need to
 	# run empirical tests
@@ -105,3 +120,11 @@ class Tweet():
 				return None
 
 		return True
+
+
+	def contains_any(self, word_list):
+		for needle in word_list:
+			if self.contains_word(needle.lower()):
+				return True
+
+		return None
