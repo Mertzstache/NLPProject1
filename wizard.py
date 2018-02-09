@@ -106,9 +106,15 @@ class Wizard():
 		corpus = self.corpus_contain_best_win.filter(lambda x: x.contains_all(award_tokens))
 
 		print("winner")
+
+		candidates = []
+
 		for tweet in corpus:
-			print(tweet)
-			print(tweet.re_findall(r'(\b[A-Z][\w,]*\b\s*)+(win|won)'))
+			# print(tweet)
+			candidates += tweet.re_findall(r'(\b[A-Z][\w,]*(?:\s+\b[A-Z][\w,]*)+)\s+(?:win|won)')
 			# named_entities = tweet.get_named_entities()
-			#print(named_entities)
+
+
+		cand_counter = Counter(candidates)
+		print(cand_counter.most_common(10))
 
