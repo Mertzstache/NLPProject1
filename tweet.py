@@ -1,12 +1,16 @@
 import re
+import spacy
 # from nltk import word_tokenize
 
 from util import ngrams
 
-# nlp = spacy.load('en')
-# print("finished loading en data")
+
+nlp = spacy.load('en')
+
 
 class Tweet():
+
+	spacy_parse = None
 
 	def __init__(self, text):
 
@@ -32,6 +36,14 @@ class Tweet():
 
 	def __str__(self):
 		return self.text
+
+	# WARNING: do not call this on many tweets, or the runtime will blow up
+	# this should only be used on heavily filtered subsets
+	def get_named_entities(self):
+		self.__process_parse(self.text)
+		return [ent.text for ent in self.spacy_parse.ents]
+
+
 
 
 	# ------------------------------------------------------------------------
@@ -60,6 +72,12 @@ class Tweet():
 	# extract all sets of two tokens in a row that are uppercased; looking for proper names of people
 	def __process_uppercased_2grams(self, text):
 		return list(filter(lambda x: x[0][0].isupper() and x[1][0].isupper(), ngrams(text, 2)))
+
+	# should not be called on every tweet or the program will never finish. only small subsets
+	# runs the spacy parser on the text of this tweet.
+	def __process_parse(self, text):
+		if self.spacy_parse == None:
+			self.spacy_parse = nlp(text)
 
 
 	# copied from old main file. not working as it stands

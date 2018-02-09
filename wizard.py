@@ -18,7 +18,7 @@ class Wizard():
 		self.corpus_contain_best = self.corpus.filter(
 			lambda x: x.contains_word_partial('best'))
 		self.corpus_contain_best_nominee = self.corpus_contain_best.filter(
-			lambda x: x.contains_word_partial('nominee'))
+			lambda x: x.contains_word_partial('nomin'))
 		self.corpus_contain_best_win = self.corpus_contain_best.filter(
 			lambda x: x.contains_any(['win', 'won', 'wins']))
 		self.corpus_contain_best_present = self.corpus_contain_best.filter(
@@ -61,9 +61,13 @@ class Wizard():
 
 	def get_info_for_award(self, award_tokens):
 
-		return ('presenter', self.__get_presenters(award_tokens))
-		# self.__get_nominees(award_name)
-		# self.__get_winners(award_name)
+		print(award_tokens, "\n\n")
+
+		self.__get_presenters(award_tokens)
+		self.__get_nominees(award_tokens)
+		self.__get_winners(award_tokens)
+
+		print("\n\n\n\n\n")
 
 		
 		
@@ -71,36 +75,28 @@ class Wizard():
 
 	def __get_presenters(self, award_tokens):
 
-		corpus = self.corpus_contain_best.filter_re_search('\w+\W\w+\W(won|wins)')
+		# corpus = self.corpus_contain_best.filter_re_search('\w+\W\w+\W(won|wins)')
+		corpus = self.corpus_contain_best_present.filter(lambda x: x.contains_all(award_tokens))
 
+		print("presenter")
 		for tweet in corpus:
-			print(tweet, "\n")
-
-		# corpus = self.corpus_contain_best_present.filter(lambda x: x.contains_all(award_tokens))
-
-		# for tweet in corpus:
-		#  	print(tweet.uppercased_2grams, "\n")
-
-		# candidates = []
-
-		# for tweet in corpus:
-		# 	candidates += map(lambda x: ' '.join(x), tweet.uppercased_2grams)
+		  	print(tweet)
 
 
-		# cand_counter = Counter(candidates)
-		# top_list = cand_counter.most_common(10)
+	def __get_nominees(self, award_tokens):
+		
+		corpus = self.corpus_contain_best_nominee.filter(lambda x: x.contains_all(award_tokens))
 
-		# if top_list:
-		# 	return top_list[0][0]
-		# else:
-		# 	return 'none'
-
-
-
-	def __get_nominees(self, award_name):
-		pass
+		print("nominee")
+		for tweet in corpus:
+			print(tweet)
 
 
-	def __get_winners(self, award_name):
-		pass
+	def __get_winners(self, award_tokens):
+		
+		corpus = self.corpus_contain_best_win.filter(lambda x: x.contains_all(award_tokens))
+
+		print("winner")
+		for tweet in corpus:
+			print(tweet)
 

@@ -10,7 +10,7 @@ from tweet import Tweet
 def create_corpus_from_file(file_path):
 	json_data = read_json_data(file_path)
 	unique_tweets_raw = get_unique_tweets(json_data)
-	return Corpus(list(map(lambda x: Tweet(x), unique_tweets_raw)))
+	return Corpus(map(lambda x: Tweet(x), unique_tweets_raw))
 
 
 def read_json_data(file_path):

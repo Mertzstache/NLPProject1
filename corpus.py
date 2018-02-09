@@ -2,11 +2,13 @@
 class Corpus():
 
 	def __init__(self, tweets):
-		self.tweets = tweets
+		self.tweets = list(tweets)
 
 	def __iter__(self):
 		return iter(self.tweets)
 
+	def __len__(self):
+		return (len(self.tweets))
 
 	# filter this corpus and return the subset
 	# fn must be a boolean function on Tweet (should be defined in the Tweet subclass)

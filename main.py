@@ -13,18 +13,6 @@ from jsonreader import create_corpus_from_file
 from wizard import Wizard
 
 
-# things to think about as a team:
-# ensemble methods will have the best performance. we can put as much 
-# engineering time as we want into this project. what kinds of things 
-# should we focus on?
-
-# start simple, build up from there to improve performance. let's get 
-# a baseline up and running if we can do that quickly we can start playing 
-# around with more fun things (statistical methods and whatnot)
-
-# the baseline should just be simple rules (E.G. a search for "best 
-# picture award is ?some")
-
 
 def main():
 	"""main function"""
@@ -32,19 +20,30 @@ def main():
 	gg_corpus = create_corpus_from_file(filename)
 
 	wizard = Wizard(gg_corpus)
+	
+
+	# get the host for the awards
 	# gg_host = wizard.get_host()
 	# print("host is:", gg_host)
 
 
-	# award_list = wizard.get_award_names()
+	# gets the list of awards
+	award_list = wizard.get_award_names()
 	# print(award_list)
 
-	# for award_tokens in award_list:
-	#  	award_info = wizard.get_info_for_award(award_tokens)
-	#  	print(award_tokens, award_info)
 
-	award_info = wizard.get_info_for_award(['best', 'actor'])
+	# gather info for each of the awards
+
+	for award_tokens in award_list:
+	  	award_info = wizard.get_info_for_award(award_tokens)
+	  	# print(award_tokens, award_info)
+
+	# award_info = wizard.get_info_for_award(['best', 'actor'])
 	# print(award_info)
+
+
+
+
 
 
 if __name__ == "__main__":
