@@ -108,7 +108,7 @@ class Wizard():
 		print("winner")
 		for tweet in corpus:
 			print(tweet)
-			print(tweet.re_findall('(\s[A-Z]\w*)+\s(wins?\s+)(for\s+)?((?i)best)'))
+			print(tweet.re_findall(r'(\b[A-Z][\w,]*\b\s*)+(win|won)'))
 			# named_entities = tweet.get_named_entities()
 			#print(named_entities)
 
