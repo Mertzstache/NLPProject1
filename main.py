@@ -33,13 +33,7 @@ def main():
 
 
 	# gather info for each of the awards
-
-	for award_tokens in award_list:
-	  	award_info = wizard.get_info_for_award(award_tokens)
-	  	# print(award_tokens, award_info)
-
-	# award_info = wizard.get_info_for_award(['best', 'actor'])
-	# print(award_info)
+	wizard.get_all_award_info(award_list)
 
 
 

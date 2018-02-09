@@ -59,6 +59,15 @@ class Wizard():
 
 
 
+	def get_all_award_info(self, award_list):
+
+		# for award_tokens in award_list:
+
+		# right now just test on the first award
+	  	award_info = self.get_info_for_award(award_list[0])
+
+
+
 	def get_info_for_award(self, award_tokens):
 
 		print(award_tokens, "\n\n")
@@ -99,4 +108,7 @@ class Wizard():
 		print("winner")
 		for tweet in corpus:
 			print(tweet)
+			print(tweet.re_findall('(\s[A-Z]\w*)+\s(wins?\s+)(for\s+)?((?i)best)'))
+			# named_entities = tweet.get_named_entities()
+			#print(named_entities)
 

@@ -16,4 +16,4 @@ class Corpus():
 		return Corpus(filter(fn, self))
 
 	def filter_re_search(self, pattern):
-		return self.filter(lambda x: x.re_search(pattern))
+		return self.filter(lambda x: x.filter_re_search(pattern))

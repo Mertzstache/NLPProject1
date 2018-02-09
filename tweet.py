@@ -41,8 +41,11 @@ class Tweet():
 	# this should only be used on heavily filtered subsets
 	def get_named_entities(self):
 		self.__process_parse(self.text)
-		return [ent.text for ent in self.spacy_parse.ents]
+		return [(ent.text, ent.label_) for ent in self.spacy_parse.ents]
 
+
+	def re_findall(self, pattern):
+		return re.findall(pattern, self.text)
 
 
 
@@ -124,8 +127,9 @@ class Tweet():
 
 		return True
 
-
-	def re_search(self, pattern):
+	# note that this is a filter, if you want to actually get the entities that were
+	# matched, call that specific function. don't modify this one
+	def filter_re_search(self, pattern):
 		return re.search(pattern, self.text)
 
 
