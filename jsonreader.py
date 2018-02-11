@@ -7,7 +7,7 @@ from tweet import Tweet
 # and returns a corpus object
 #-------------------------------------------------
 
-def create_corpus_from_file(file_path):
+def create_corpus_from_file(file_path="gg2018.json"):
 	json_data = read_json_data(file_path)
 	unique_tweets_raw = get_unique_tweets(json_data)
 	return Corpus(map(lambda x: Tweet(x), unique_tweets_raw))
