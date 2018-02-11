@@ -1,5 +1,6 @@
 from encoded_knowledge import *
 from collections import Counter
+from util import is_person
 
 class Wizard():
 
@@ -34,7 +35,7 @@ class Wizard():
 		# print(len(self.corpus_contain_robbed))
 		# print(len(self.corpus_contain_best))
 
-		
+
 
 	# this just takes all tweets that contain the substring "host"
 	# it then takes all of the capitalized 2grams that we filtered before
@@ -56,7 +57,7 @@ class Wizard():
 
 
 	def get_award_names(self):
-		
+
 		# candidates = []
 
 		# for tweet in self.corpus:
@@ -88,8 +89,8 @@ class Wizard():
 
 		print("\n\n\n\n\n")
 
-		
-		
+
+
 
 
 	def __get_presenters(self, award_tokens):
@@ -103,7 +104,7 @@ class Wizard():
 
 
 	def __get_nominees(self, award_tokens):
-		
+
 		corpus = self.corpus_contain_best_nominee.filter(lambda x: x.contains_all(award_tokens))
 
 		print("nominee")
@@ -112,8 +113,10 @@ class Wizard():
 
 
 	def __get_winners(self, award_tokens):
-		
+
 		corpus = self.corpus_contain_best_win.filter(lambda x: x.contains_all(award_tokens))
+
+		winner_is_movie = False if any(token in ['actress','actor'] for token in award_tokens) else True
 
 		print("winner")
 
@@ -121,10 +124,11 @@ class Wizard():
 
 		for tweet in corpus:
 			# print(tweet)
-			candidates += tweet.re_findall(r'(\b[A-Z][\w,]*(?:\s+\b[A-Z][\w,]*)+)\s+(?:win|won)')
+			candidate = tweet.re_findall(r'(\b[A-Z][\w,]*(?:\s+\b[A-Z][\w,]*)+)\s+(?:win|won)')
+			if len(candidate) > 0 and winner_is_movie != is_person(candidate[0]):
+				candidates += candidate
 			# named_entities = tweet.get_named_entities()
 
 
 		cand_counter = Counter(candidates)
 		print(cand_counter.most_common(10))
-
