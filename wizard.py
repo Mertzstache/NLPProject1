@@ -24,6 +24,12 @@ class Wizard():
 		self.corpus_contain_best_present = self.corpus_contain_best.filter(
 			lambda x: x.contains_word_partial('present'))
 
+		self.corpus_contain_congrat_not_win = self.corpus_contain_best.filter(
+			lambda x: x.contains_word_partial('congrat')).filter(
+			lambda x: x.not_contains_partial('win'))
+
+		
+
 		
 
 	# this just takes all tweets that contain the substring "host"

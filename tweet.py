@@ -115,7 +115,7 @@ class Tweet():
 
 	def not_contains_partial(self, fragment):
 		for token in self.split_text_lower:
-			if token.startwith(fragment.lower()):
+			if token.startswith(fragment.lower()):
 				return None
 
 		return True
