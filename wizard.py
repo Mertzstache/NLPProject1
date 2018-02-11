@@ -23,12 +23,16 @@ class Wizard():
 			lambda x: x.contains_any(['win', 'won', 'wins']))
 		self.corpus_contain_best_present = self.corpus_contain_best.filter(
 			lambda x: x.contains_word_partial('present'))
-
 		self.corpus_contain_congrat_not_win = self.corpus_contain_best.filter(
 			lambda x: x.contains_word_partial('congrat')).filter(
 			lambda x: x.not_contains_partial('win'))
+		self.corpus_contain_robbed = self.corpus.filter(
+			lambda x: x.contains_word_partial('robbed'))
 
-		
+		# for tweet in self.corpus_contain_robbed:
+		# 	print(tweet)
+		# print(len(self.corpus_contain_robbed))
+		# print(len(self.corpus_contain_best))
 
 		
 

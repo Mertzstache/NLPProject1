@@ -2,6 +2,9 @@
 NLP Group Project: Golden GLobes info extractor
 
 How to run:
+IMDb Stuff:
+https://github.com/alberanid/imdbpy
+pip3 install git+https://github.com/alberanid/imdbpy
 
 install the spacy parser:
 -make sure you have python's pip installed
