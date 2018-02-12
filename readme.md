@@ -1,23 +1,23 @@
 
-NLP Group Project: Golden GLobes info extractor
+# NLP Group Project: Golden GLobes info extractor
 
-How to run:
+## Setup
+
 IMDb Stuff:
 https://github.com/alberanid/imdbpy
-pip3 install git+https://github.com/alberanid/imdbpy
 
-install the spacy parser:
--make sure you have python's pip installed
--pip3 install spacy
--python3 -m spacy download en
+`pip3 install git+https://github.com/alberanid/imdbpy`
 
-python3 main.py
+Install the spacy parser:
+* make sure you have python's pip installed
+* pip3 install spacy
+* python3 -m spacy download en
 
+Run the program:
 
+`python3 main.py`
 
-
-
-Basic source code overview:
+## Explanation
 
 We've got a corpus of Tweets. Each Tweet is just a string containing the text of that Tweet.
 
@@ -37,11 +37,11 @@ Now that we've got a smaller list to work with, we can perform more computationa
 complex tasks. We can run complex regex queries, and even run the tweets through
 parsers.
 
-It's at this point where statistics come into the picture (mostly in Wizard.py). 
-Given good pre-filtering, whats left should be the "meat" of what we care about. The 
-person or thing that we want to extract should occur in most of the filtered tweets. 
-If we have a basic heuristic that extracts proper nouns, then the thing we care about 
-should be the most frequent. This is the power of having tons of data to work with. 
+It's at this point where statistics come into the picture (mostly in `wizard.py`).
+Given good pre-filtering, whats left should be the "meat" of what we care about. The
+person or thing that we want to extract should occur in most of the filtered tweets.
+If we have a basic heuristic that extracts proper nouns, then the thing we care about
+should be the most frequent. This is the power of having tons of data to work with.
 You can do inference without actually having to reason about anything. (Getting into the
 foundations of associative learning!).
 
