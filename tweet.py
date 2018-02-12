@@ -23,7 +23,7 @@ class Tweet():
 		self.split_text = self.text.split()
 		self.split_text_lower = self.text_lower.split()
 
-		
+
 		# from a machine learning perspective, these are the features
 		# that we are going to be working with
 		# what features matter?
@@ -31,7 +31,6 @@ class Tweet():
 		self.tags = self.__process_tags(self.split_text)
 		self.uppercased = self.__process_uppercased(self.split_text)
 		self.uppercased_2grams = self.__process_uppercased_2grams(self.split_text)
-
 
 
 	def __str__(self):
@@ -47,14 +46,10 @@ class Tweet():
 	def re_findall(self, pattern):
 		return re.findall(pattern, self.text)
 
-
-
 	# ------------------------------------------------------------------------
 	# the stuff in here really should only be for pre-processing (aka caching)
 	# all statistical and counting junk should exist in an exterior class
 	# ------------------------------------------------------------------------
-
-
 
 	# does this tweet have the word "best" in it?
 	def __contains_best(self, text):
@@ -93,9 +88,9 @@ class Tweet():
 
 
 	# --------------------------------------------------------------------------------------
-	# everything below this line should be considered one-off, in other words you're pretty 
-	# sure this function is only going to be called one or two times (for a particular arglist. 
-	# This saves us memory (maybe we don't care, we can just download more?) 
+	# everything below this line should be considered one-off, in other words you're pretty
+	# sure this function is only going to be called one or two times (for a particular arglist.
+	# This saves us memory (maybe we don't care, we can just download more?)
 	# https://downloadmoreram.com/
 	# --------------------------------------------------------------------------------------
 
@@ -140,7 +135,6 @@ class Tweet():
 	# matched, call that specific function. don't modify this one
 	def filter_re_search(self, pattern):
 		return re.search(pattern, self.text)
-
 
 	# careful when using this, might overconstrain search
 	# should be fine if our corpus is big enough, but need to

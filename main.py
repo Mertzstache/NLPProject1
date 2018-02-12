@@ -23,10 +23,7 @@ def main():
     data = json.load(open(filename))
     wizard = Wizard(gg_corpus)
 
-    #scrape award names from wikipedia
-    ggpage = wikipedia.page("Golden Globe Award")
-    award_list = ggpage.section("Motion picture awards")+ "\n"+ ggpage.section("Television awards")
-    award_list = preprocess_awards(award_list)
+    award_list = wizard.get_award_names()
 
     #get host
     gg_host = wizard.get_host()
