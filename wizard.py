@@ -87,7 +87,7 @@ class Wizard():
 		self.__get_nominees(award_tokens)
 		self.__get_winners(award_tokens)
 
-		print("\n\n\n\n\n")
+		print("\n\n\n")
 
 
 

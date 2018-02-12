@@ -12,7 +12,7 @@ import sys, re, wikipedia, json
 from imdb import IMDb
 from jsonreader import create_corpus_from_file
 from wizard import Wizard
-
+from util import preprocess_awards
 
 
 def main():
@@ -22,23 +22,15 @@ def main():
 
     data = json.load(open(filename))
     wizard = Wizard(gg_corpus)
-    # ggpage = wikipedia.page("Golden Globe Award")
-    # award_list = ggpage.section("Motion picture awards")+ "\n"+ ggpage.section("Television awards")
-    #
-    # print(wikipedia.summary("Call Me by Your Name (film)"))
-    #
-    # ia = IMDb()
-    # for person in ia.search_person('Mel Gibson'):
-    #     print(person.personID, person['name'])
-    # print(len(ia.search_person('Call Me by Your Name')) == 0)
-    # get the host for the awards
+
+    #scrape award names from wikipedia
+    ggpage = wikipedia.page("Golden Globe Award")
+    award_list = ggpage.section("Motion picture awards")+ "\n"+ ggpage.section("Television awards")
+    award_list = preprocess_awards(award_list)
+
+    #get host
     gg_host = wizard.get_host()
     # print("host is:", gg_host)
-
-    # gets the list of awards
-    award_list = wizard.get_award_names()
-    # print(award_list)
-
 
     # gather info for each of the awards
     wizard.get_all_award_info(award_list)
