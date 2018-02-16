@@ -70,6 +70,7 @@ class Wizard():
         ggpage = wikipedia.page("Golden Globe Award")
         award_list = ggpage.section("Motion picture awards")+ "\n"+ ggpage.section("Television awards")
         award_list = list(preprocess_awards(award_list))
+        print(award_list)
         return award_list
 
 
@@ -78,7 +79,8 @@ class Wizard():
         # for award_tokens in award_list:
 
         # right now just test on the first award
-      	award_info = self.get_info_for_award(award_list[0])
+      	award_info = self.get_info_for_award(award_list[3])
+
 
     def get_info_for_award(self, award_tokens):
 

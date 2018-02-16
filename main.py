@@ -27,7 +27,7 @@ def main():
 
     #get host
     gg_host = wizard.get_host()
-    # print("host is:", gg_host)
+    print("host is:", gg_host)
 
     # gather info for each of the awards
     wizard.get_all_award_info(award_list)
