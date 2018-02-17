@@ -18,7 +18,10 @@ def is_person(entity, d):
 
     #return len(ia.search_person(entity)) > 0 or entity.lower != "golden globe" or entity.lower != "golden globes"
     # return len(remove_stopwords) == 2 and entity.lower != "golden globe" and entity.lower != "golden globes" and len[]
-
+def is_not_award_name(entity, award_tokens):
+    print(' '.join(award_tokens) in entity.lower())
+    return not ' '.join(award_tokens) in entity.lower() and not 'golden globe' in entity.lower() and not 'golden globes' in entity.lower()
+    
 def get_list_of_words(inputFileName):
     data = []
     # pp = pprint.PrettyPrinter()
