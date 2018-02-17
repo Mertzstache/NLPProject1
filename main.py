@@ -13,6 +13,7 @@ from imdb import IMDb
 from jsonreader import create_corpus_from_file
 from wizard import Wizard
 from util import preprocess_awards
+import pprint
 
 
 def main():
@@ -30,7 +31,12 @@ def main():
     print("host is:", gg_host)
 
     # gather info for each of the awards
-    wizard.get_all_award_info(award_list)
+    info = wizard.get_all_award_info(award_list)
+    # info = wizard.who_was_robbed()
+
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(info)
+
     # for elem in data:
     #   # print(elem['text'])
     #   m = re.search('robbed', elem['text']) #'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)'

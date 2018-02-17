@@ -1,6 +1,6 @@
 from encoded_knowledge import *
 from collections import Counter
-from util import is_person, preprocess_awards, remove_stopwords
+from util import is_person, preprocess_awards, remove_stopwords, get_list_of_words
 import wikipedia
 
 class Wizard():
@@ -10,6 +10,7 @@ class Wizard():
     def __init__(self, corpus):
         self.corpus = corpus
         self.cache_useful_corpora()
+        self.d = get_list_of_words("3esl.txt")
 
 
     # memory grows with log of original corpora size, should be ok
@@ -68,41 +69,62 @@ class Wizard():
         # let's hardcode these for now. we can revisit later if we have time
 
         ggpage = wikipedia.page("Golden Globe Award")
-        award_list = ggpage.section("Motion picture awards")+ "\n"+ ggpage.section("Television awards")
-        award_list = list(preprocess_awards(award_list))
-        print(award_list)
+        award_list = ""
+        for string in (ggpage.section("Motion picture awards") + "\n"+ ggpage.section("Television awards")).splitlines():
+            temp = ""
+            for character in string:
+                if character == ":":
+                    break
+                temp += character
+            award_list += temp + "\n"
+        # print(award_list)
+        award_list = preprocess_awards(award_list)
+        # print(award_list)
         return award_list
 
 
     def get_all_award_info(self, award_list):
 
-        # for award_tokens in award_list:
+        award_info = []
+        for award_tokens in award_list:
+            award_info.append((' '.join(word for word in award_tokens), self.get_info_for_award(award_tokens)))
+        return award_info
 
-        # right now just test on the first award
-      	award_info = self.get_info_for_award(award_list[3])
 
 
     def get_info_for_award(self, award_tokens):
 
         print(award_tokens, "\n\n")
 
-        self.__get_presenters(award_tokens)
-        self.__get_nominees(award_tokens)
-        self.__get_winners(award_tokens)
+        info = {}
+        # info['presenters'] = self.__get_presenters(award_tokens)
+        #info['nominees'] = self.__get_nominees(award_tokens)
+        info['winners'] = self.__get_winners(award_tokens)
 
-        print("\n\n\n")
+        return info
+    def who_was_robbed(self):
+        corpus = self.corpus_contain_robbed
+
+        candidates = [] 
+
+        for tweet in corpus:
+            # print(tweet)
+            candidate = list(filter(is_person, list(map(lambda x: ' '.join(x), tweet.uppercased_2grams))))
+            candidates += candidate
+        cand_counter = Counter(candidates)
+        return cand_counter.most_common(60)
 
     def __get_presenters(self, award_tokens):
 
         # corpus = self.corpus_contain_best.filter_re_search('\w+\W\w+\W(won|wins)')
-        corpus = self.corpus_contain_best_present.filter(lambda x: x.contains_all(award_tokens))
+        corpus = self.corpus_contain_best_present.filter(lambda x: x.contains_any(award_tokens))
 
         print("presenter")
 
         candidates = []
 
         for tweet in corpus:
-            print(tweet)
+            #print(tweet)
             # tweet.text = remove_stopwords(tweet.text, award_tokens)
             # tweet.split_text = tweet.text.split()
             candidate = list(filter(is_person,list(map(lambda x: ' '.join(x), tweet.uppercased_2grams))))
@@ -110,32 +132,72 @@ class Wizard():
 
         cand_counter = Counter(candidates)
         print(cand_counter.most_common(10))
+        return cand_counter.most_common(1)
 
 
     def __get_nominees(self, award_tokens):
 
-        corpus = self.corpus_contain_best_nominee.filter(lambda x: x.contains_all(award_tokens))
+        corpus = self.corpus_contain_best_nominee.filter(lambda x: x.contains_any(award_tokens))
+
+        candidates = []
 
         print("nominee")
         for tweet in corpus:
-            print(tweet)
-
+            # print(tweet)
+            people_mentioned = [i for i in tweet.uppercased_2grams if is_person(str(i))]
+            if len(people_mentioned) > 0:
+                for ppl in people_mentioned:
+                    candidates += ppl
+        cand_counter = Counter(candidates)
+        print(cand_counter.most_common(20))
 
     def __get_winners(self, award_tokens):
 
-        corpus = self.corpus_contain_best_win.filter(lambda x: x.contains_all(award_tokens))
+        corpus = self.corpus_contain_best_win.filter(lambda x: x.contains_any(award_tokens)).filter(
+            lambda x: x.contains_word(award_tokens[1]))
 
-        winner_is_movie = False if any(token in ['actress','actor'] for token in award_tokens) else True
+        winner_is_actress = True if any(token in ['actress'] for token in award_tokens) else False
+        winner_is_actor = True if any(token in ['actor'] for token in award_tokens) else False
+        winner_is_director = True if any(token in ['director'] for token in award_tokens) else False
+
+        genre_drama = True if any(token in ['drama'] for token in award_tokens) else False
+        genre_comedy = True if any(token in ['comedy'] for token in award_tokens) else False
+
+        winner_is_television = True if any(token in ['television'] for token in award_tokens) else False
+        
+        if winner_is_actor:
+            corpus = corpus.filter(lambda x: x.contains_word('actor'))
+        elif winner_is_actress:
+            corpus = corpus.filter(lambda x: x.contains_word('actress'))
+        elif winner_is_director:
+            corpus = corpus.filter(lambda x: x.contains_word('director'))
+
+        if genre_comedy:
+            corpus = corpus.filter(lambda x: x.contains_word('comedy'))
+        elif genre_drama:
+            corpus = corpus.filter(lambda x: x.contains_word('drama'))
+
+        if winner_is_television:
+            corpus = corpus.filter(lambda x: x.contains_any(['TV', 'television']))
+        else: 
+            corpus = corpus.filter(lambda x: x.not_contains_partial('television'))
+
+
+
+
+        winner_is_movie = not (winner_is_actor or winner_is_actress or winner_is_director)
 
         print("winner")
 
         candidates = []
 
         for tweet in corpus:
-            print(tweet)
+            # print(tweet)
             candidate = tweet.re_findall(r'(\b[A-Z][\w,]*(?:\s+\b[A-Z][\w,]*)+)\s+(?:win|won)')
-            if len(candidate) > 0 and winner_is_movie != is_person(candidate[0]):
+            print(candidate)
+            if len(candidate) > 0 and winner_is_movie != is_person(candidate[0], self.d):
                 candidates += candidate
 
         cand_counter = Counter(candidates)
         print(cand_counter.most_common(10))
+        return cand_counter.most_common(1)
