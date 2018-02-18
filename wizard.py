@@ -92,7 +92,7 @@ class Wizard():
 
         for tweet in corpus:
             entities += tweet.re_findall(r'(Best(?: +[A-Z-–][\w,]*)+)')
-            
+
         counter = Counter(entities)
         print(counter.most_common(50))
 
@@ -101,11 +101,11 @@ class Wizard():
     def get_all_award_info(self, award_list):
 
         award_info = []
-        # for award_tokens in award_list:
-        #     award_info.append((' '.join(word for word in award_tokens), 
-        #         self.get_info_for_award(award_tokens)))
+        for award_tokens in award_list:
+            award_info.append((' '.join(word for word in award_tokens),
+                self.get_info_for_award(award_tokens)))
 
-        self.get_info_for_award(award_list[0])
+        # self.get_info_for_award(award_list[0])
 
         return award_info
 
@@ -116,9 +116,11 @@ class Wizard():
         # print(award_tokens, "\n\n")
 
         info = {}
-        # info['presenters'] = self.__get_presenters(award_tokens)
+        info['presenters'] = self.__get_presenters(award_tokens)
         info['nominees'] = self.__get_nominees(award_tokens)
-        # info['winners'] = self.__get_winners(award_tokens)
+        info['winners'] = self.__get_winners(award_tokens)
+
+        print(info)
 
         return info
 
@@ -126,7 +128,7 @@ class Wizard():
     def who_was_robbed(self):
         corpus = self.corpus_contain_robbed
 
-        candidates = [] 
+        candidates = []
 
         for tweet in corpus:
             # print(tweet)
@@ -136,11 +138,12 @@ class Wizard():
         return cand_counter.most_common(60)
 
     def __get_presenters(self, award_tokens):
+        print(award_tokens)
 
         # corpus = self.corpus_contain_best.filter_re_search('\w+\W\w+\W(won|wins)')
-        corpus = self.corpus_contain_best_present.filter(lambda x: x.contains_any(award_tokens))
+        corpus = self.corpus_contain_best_present.filter(lambda x: x.contains_all(award_tokens[1:]))
 
-        print("presenter")
+        # print("presenter")
 
         candidates = []
 
@@ -148,11 +151,11 @@ class Wizard():
             #print(tweet)
             # tweet.text = remove_stopwords(tweet.text, award_tokens)
             # tweet.split_text = tweet.text.split()
-            candidate = list(filter(is_person,list(map(lambda x: ' '.join(x), tweet.uppercased_2grams))))
+            candidate = list(filter(lambda f: is_person(f, self.d) ,list(map(lambda x: ' '.join(x), tweet.uppercased_2grams))))
             candidates += candidate
 
         cand_counter = Counter(candidates)
-        print(cand_counter.most_common(10))
+        # print(cand_counter.most_common(10))
         return cand_counter.most_common(1)
 
 
@@ -162,11 +165,11 @@ class Wizard():
         corpus = self.corpus.filter(
             lambda x: x.contains_any_partial(['congrat', 'nom', 'hope', 'should', 'could', 'rob']))
 
-        for tweet in corpus:
-            print(tweet)
-            print("runs", tweet.uppercased_runs)
-            print("\n")
-            
+        # for tweet in corpus:
+        #     print(tweet)
+            # print("runs", tweet.uppercased_runs)
+        #     print("\n")
+
 
 
         # corpus = self.corpus_contain_best_nominee.filter(lambda x: x.contains_any(award_tokens))
@@ -205,7 +208,7 @@ class Wizard():
         # genre_animated = True if any(token in ['animated'] for token in award_tokens) else False
 
         winner_is_television = True if any(token in ['television', 'series'] for token in award_tokens) else False
-        
+
         if winner_is_actor:
             corpus = corpus.filter(lambda x: x.contains_word('actor'))
         elif winner_is_actress:
@@ -226,7 +229,7 @@ class Wizard():
 
         if winner_is_television:
             corpus = corpus.filter(lambda x: x.contains_word_partial('tele'))
-        else: 
+        else:
             corpus = corpus.filter(lambda x: x.not_contains_partial('tele'))
 
 
