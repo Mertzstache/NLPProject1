@@ -24,14 +24,14 @@ def main():
     data = json.load(open(filename))
     wizard = Wizard(gg_corpus)
 
-    award_list = wizard.get_award_names_local()
+    award_list = wizard.get_award_names()
 
     #get host
     gg_host = wizard.get_host()
     # print("host is:", gg_host)
 
     # gather info for each of the awards
-    # info = wizard.get_all_award_info(award_list)
+    info = wizard.get_all_award_info(award_list)
     # info = wizard.who_was_robbed()
 
     # pp = pprint.PrettyPrinter(indent=4)
