@@ -8,7 +8,7 @@
 # $main.py <filename.json>
 #****************************************
 
-import sys, re, wikipedia, json
+import sys, re, json
 from imdb import IMDb
 from jsonreader import create_corpus_from_file
 from wizard import Wizard
@@ -24,18 +24,18 @@ def main():
     data = json.load(open(filename))
     wizard = Wizard(gg_corpus)
 
-    award_list = wizard.get_award_names()
+    award_list = wizard.get_award_names_local()
 
     #get host
     gg_host = wizard.get_host()
-    print("host is:", gg_host)
+    # print("host is:", gg_host)
 
     # gather info for each of the awards
-    info = wizard.get_all_award_info(award_list)
+    # info = wizard.get_all_award_info(award_list)
     # info = wizard.who_was_robbed()
 
-    pp = pprint.PrettyPrinter(indent=4)
-    pp.pprint(info)
+    # pp = pprint.PrettyPrinter(indent=4)
+    # pp.pprint(info)
 
     # for elem in data:
     #   # print(elem['text'])

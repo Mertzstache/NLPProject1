@@ -31,6 +31,7 @@ class Tweet():
 		self.tags = self.__process_tags(self.split_text)
 		self.uppercased = self.__process_uppercased(self.split_text)
 		self.uppercased_2grams = self.__process_uppercased_2grams(self.split_text)
+		self.uppercased_runs = self.__process_uppercased_runs(self.split_text)
 
 
 	def __str__(self):
@@ -70,6 +71,11 @@ class Tweet():
 	# extract all sets of two tokens in a row that are uppercased; looking for proper names of people
 	def __process_uppercased_2grams(self, text):
 		return list(filter(lambda x: x[0][0].isupper() and x[1][0].isupper(), ngrams(text, 2)))
+
+	# get a list of every run of uppercased tokens greater than 1
+	def __process_uppercased_runs(self, text):
+		return self.re_findall(r'(\b[A-Z][\w,-]*(?: +\b[A-Z][\w,-]*)+)')
+
 
 	# should not be called on every tweet or the program will never finish. only small subsets
 	# runs the spacy parser on the text of this tweet.
@@ -150,6 +156,13 @@ class Tweet():
 	def contains_any(self, word_list):
 		for needle in word_list:
 			if self.contains_word(needle.lower()):
+				return True
+
+		return None
+
+	def contains_any_partial(self, word_list):
+		for needle in word_list:
+			if self.contains_word_partial(needle.lower()):
 				return True
 
 		return None

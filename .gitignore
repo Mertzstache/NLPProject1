@@ -1,2 +1,4 @@
 __pycache__/
 gg2018.json
+*.sublime-workspace
+*.sublime-project

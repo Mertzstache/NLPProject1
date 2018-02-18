@@ -10,6 +10,13 @@ STOP_WORDS = [
 'a'
 ]
 
+NON_CAPPED = [
+'at', 'by', 'for', 'from', 'in', 'into', 
+'of', 'off', 'on', 'onto', 'to', 'with',
+'and', 'as', 'but', 'for', 'if', 'nor', 'once', 
+'or', 'so', 'than', 'that', 'till', 'when', 'yet'
+]
+
 AWARD_NAMES_MOTION_PICTURE = [
 'Best Motion Picture – Drama', 
 'Best Motion Picture – Musical or Comedy',
