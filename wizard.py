@@ -1,6 +1,6 @@
 from encoded_knowledge import *
 from collections import Counter
-from util import is_person, preprocess_awards, remove_stopwords, get_list_of_words
+from util import is_person, preprocess_awards, remove_stopwords, get_list_of_words, is_not_award_name
 import wikipedia
 
 class Wizard():
@@ -192,16 +192,19 @@ class Wizard():
     def __get_winners(self, award_tokens):
 
         corpus = self.corpus_contain_best_win.filter(lambda x: x.contains_any(award_tokens)).filter(
-            lambda x: x.contains_word(award_tokens[1]))
+            lambda x: x.contains_any(award_tokens[1:]))
 
         winner_is_actress = True if any(token in ['actress'] for token in award_tokens) else False
         winner_is_actor = True if any(token in ['actor'] for token in award_tokens) else False
         winner_is_director = True if any(token in ['director'] for token in award_tokens) else False
+        winner_is_supporting= True if any(token in ['supporting'] for token in award_tokens) else False
+
 
         genre_drama = True if any(token in ['drama'] for token in award_tokens) else False
         genre_comedy = True if any(token in ['comedy'] for token in award_tokens) else False
+        # genre_animated = True if any(token in ['animated'] for token in award_tokens) else False
 
-        winner_is_television = True if any(token in ['television'] for token in award_tokens) else False
+        winner_is_television = True if any(token in ['television', 'series'] for token in award_tokens) else False
         
         if winner_is_actor:
             corpus = corpus.filter(lambda x: x.contains_word('actor'))
@@ -210,15 +213,21 @@ class Wizard():
         elif winner_is_director:
             corpus = corpus.filter(lambda x: x.contains_word('director'))
 
+        if winner_is_supporting:
+            corpus = corpus.filter(lambda x: x.contains_word_partial('support'))
+
         if genre_comedy:
             corpus = corpus.filter(lambda x: x.contains_word('comedy'))
         elif genre_drama:
             corpus = corpus.filter(lambda x: x.contains_word('drama'))
+        # elif genre_animated:
+        #     corpus = corpus.filter(lambda x: x.contains_word('coco'))
+
 
         if winner_is_television:
-            corpus = corpus.filter(lambda x: x.contains_any(['TV', 'television']))
+            corpus = corpus.filter(lambda x: x.contains_word_partial('tele'))
         else: 
-            corpus = corpus.filter(lambda x: x.not_contains_partial('television'))
+            corpus = corpus.filter(lambda x: x.not_contains_partial('tele'))
 
 
 
@@ -233,7 +242,9 @@ class Wizard():
             # print(tweet)
             candidate = tweet.re_findall(r'(\b[A-Z][\w,]*(?:\s+\b[A-Z][\w,]*)+)\s+(?:win|won)')
             # print(candidate)
-            if len(candidate) > 0 and winner_is_movie != is_person(candidate[0], self.d):
+
+            if len(candidate) > 0 and winner_is_movie != is_person(candidate[0], self.d) and is_not_award_name(candidate[0], award_tokens):
+
                 candidates += candidate
 
         cand_counter = Counter(candidates)
