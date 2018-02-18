@@ -7,6 +7,9 @@ def ngrams(input_list, n):
 def remove_stopwords(word_list, stop_list):
     return [item for item in word_list if not item in stop_list]
 
+def strip_common_list(tokens, char_list=",'"):
+    return [token.strip(char_list) for token in tokens]
+
 def is_person(entity, d):
     # STOP_WORDS = ['for','in','-','–','or','a', 'the', 'I']
     # ia = IMDb()

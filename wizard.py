@@ -1,6 +1,6 @@
 from encoded_knowledge import *
 from collections import Counter
-from util import is_person, preprocess_awards, remove_stopwords, get_list_of_words, is_not_award_name
+from util import is_person, preprocess_awards, remove_stopwords, get_list_of_words, is_not_award_name, strip_common_list
 import wikipedia
 
 class Wizard():
@@ -158,14 +158,19 @@ class Wizard():
 
     def __get_nominees(self, award_tokens):
 
+        stuff = []
 
         corpus = self.corpus.filter(
             lambda x: x.contains_any_partial(['congrat', 'nom', 'hope', 'should', 'could', 'rob']))
 
         for tweet in corpus:
-            print(tweet)
-            print("runs", tweet.uppercased_runs)
-            print("\n")
+            stuff += strip_common_list(tweet.uppercased_runs)
+            # print(tweet)
+            # print("runs", tweet.uppercased_runs)
+            # print("\n")
+
+        counter = Counter(stuff)
+        print(counter.most_common(50))
             
 
 
