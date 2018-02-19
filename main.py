@@ -34,8 +34,8 @@ def main():
     info = wizard.get_all_award_info(award_list)
     # info = wizard.who_was_robbed()
 
-    # pp = pprint.PrettyPrinter(indent=4)
-    # pp.pprint(info)
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(info)
 
     # for elem in data:
     #   # print(elem['text'])

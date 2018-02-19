@@ -102,7 +102,7 @@ class Wizard():
 
         award_info = []
         for award_tokens in award_list:
-            award_info.append((' '.join(word for word in award_tokens),
+            award_info.append((' '.join(award_tokens),
                 self.get_info_for_award(award_tokens)))
 
         # self.get_info_for_award(award_list[0])
@@ -116,11 +116,11 @@ class Wizard():
         # print(award_tokens, "\n\n")
 
         info = {}
-        info['presenters'] = self.__get_presenters(award_tokens)
-        info['nominees'] = self.__get_nominees(award_tokens)
         info['winners'] = self.__get_winners(award_tokens)
+        info['presenters'] = self.__get_presenters(award_tokens, info['winners'])
+        info['nominees'] = self.__get_nominees(award_tokens, [info['winners'], info['presenters']])
 
-        print(info)
+        # print(info)
 
         return info
 
@@ -137,7 +137,7 @@ class Wizard():
         cand_counter = Counter(candidates)
         return cand_counter.most_common(60)
 
-    def __get_presenters(self, award_tokens):
+    def __get_presenters(self, award_tokens, winner):
         print(award_tokens)
 
         # corpus = self.corpus_contain_best.filter_re_search('\w+\W\w+\W(won|wins)')
@@ -151,6 +151,8 @@ class Wizard():
             #print(tweet)
             # tweet.text = remove_stopwords(tweet.text, award_tokens)
             # tweet.split_text = tweet.text.split()
+
+            # IF NOT WINNER######
             candidate = list(filter(lambda f: is_person(f, self.d) ,list(map(lambda x: ' '.join(x), tweet.uppercased_2grams))))
             candidates += candidate
 
@@ -159,21 +161,82 @@ class Wizard():
         return cand_counter.most_common(1)
 
 
-    def __get_nominees(self, award_tokens):
+        # corpus = self.corpus_contain_best_present.filter(lambda x: x.contains_any(award_tokens)).filter(
+        #     lambda x: x.contains_any(award_tokens[1:]))
 
-        stuff = []
+        # winner_is_actress = True if any(token in ['actress'] for token in award_tokens) else False
+        # winner_is_actor = True if any(token in ['actor'] for token in award_tokens) else False
+        # winner_is_director = True if any(token in ['director'] for token in award_tokens) else False
+        # winner_is_supporting= True if any(token in ['supporting'] for token in award_tokens) else False
 
-        corpus = self.corpus.filter(
-            lambda x: x.contains_any_partial(['congrat', 'nom', 'hope', 'should', 'could', 'rob']))
 
-        for tweet in corpus:
-            stuff += strip_common_list(tweet.uppercased_runs)
-            # print(tweet)
-            # print("runs", tweet.uppercased_runs)
-            # print("\n")
+        # genre_drama = True if any(token in ['drama'] for token in award_tokens) else False
+        # genre_comedy = True if any(token in ['comedy'] for token in award_tokens) else False
+        # # genre_animated = True if any(token in ['animated'] for token in award_tokens) else False
 
-        counter = Counter(stuff)
-        print(counter.most_common(50))
+        # winner_is_television = True if any(token in ['television', 'series'] for token in award_tokens) else False
+
+        # if winner_is_actor:
+        #     corpus = corpus.filter(lambda x: x.contains_word('actor'))
+        # elif winner_is_actress:
+        #     corpus = corpus.filter(lambda x: x.contains_word('actress'))
+        # elif winner_is_director:
+        #     corpus = corpus.filter(lambda x: x.contains_word('director'))
+
+        # if winner_is_supporting:
+        #     corpus = corpus.filter(lambda x: x.contains_word_partial('support'))
+
+        # if genre_comedy:
+        #     corpus = corpus.filter(lambda x: x.contains_word('comedy'))
+        # elif genre_drama:
+        #     corpus = corpus.filter(lambda x: x.contains_word('drama'))
+        # # elif genre_animated:
+        # #     corpus = corpus.filter(lambda x: x.contains_word('coco'))
+
+
+        # if winner_is_television:
+        #     corpus = corpus.filter(lambda x: x.contains_word_partial('tele'))
+        # else:
+        #     corpus = corpus.filter(lambda x: x.not_contains_partial('tele'))
+
+
+
+
+        # winner_is_movie = not (winner_is_actor or winner_is_actress or winner_is_director)
+
+        # # print("winner")
+
+        # candidates = []
+
+        # for tweet in corpus:
+        #     # print(tweet)
+        #     candidate = list(filter(lambda f: is_person(f, self.d) ,list(map(lambda x: ' '.join(x), tweet.uppercased_2grams))))
+        #     # print(candidate)
+
+        #     if len(candidate) > 0 and is_person(candidate[0], self.d) and is_not_award_name(candidate[0], award_tokens):
+
+        #         candidates += candidate
+
+        # cand_counter = Counter(candidates)
+        # # print(cand_counter.most_common(10))
+        # return cand_counter.most_common(1)
+
+
+    def __get_nominees(self, award_tokens, prior_knowledge):
+
+        # stuff = []
+
+        # corpus = self.corpus.filter(
+        #     lambda x: x.contains_any_partial(['congrat', 'nom', 'hope', 'should', 'could', 'rob']))
+
+        # for tweet in corpus:
+        #     stuff += strip_common_list(tweet.uppercased_runs)
+        #     # print(tweet)
+        #     # print("runs", tweet.uppercased_runs)
+        #     # print("\n")
+
+        # counter = Counter(stuff)
+        # print(counter.most_common(50))
             
 
 
@@ -193,6 +256,71 @@ class Wizard():
 
         # cand_counter = Counter(candidates)
         # print(cand_counter.most_common(20))
+        print([k[0][0] for k in prior_knowledge if len(k) > 0])
+
+        corpus = self.corpus_contain_best_nominee.filter(lambda x: x.contains_any(award_tokens[1:]))
+
+        winner_is_actress = True if any(token in ['actress'] for token in award_tokens) else False
+        winner_is_actor = True if any(token in ['actor'] for token in award_tokens) else False
+        winner_is_director = True if any(token in ['director'] for token in award_tokens) else False
+        winner_is_supporting= True if any(token in ['supporting'] for token in award_tokens) else False
+
+
+        genre_drama = True if any(token in ['drama'] for token in award_tokens) else False
+        genre_comedy = True if any(token in ['comedy'] for token in award_tokens) else False
+        # genre_animated = True if any(token in ['animated'] for token in award_tokens) else False
+
+        winner_is_television = True if any(token in ['television', 'series'] for token in award_tokens) else False
+
+        if winner_is_actor:
+            corpus = corpus.filter(lambda x: x.contains_word('actor'))
+        elif winner_is_actress:
+            corpus = corpus.filter(lambda x: x.contains_word('actress'))
+        elif winner_is_director:
+            corpus = corpus.filter(lambda x: x.contains_word('director'))
+
+        if winner_is_supporting:
+            corpus = corpus.filter(lambda x: x.contains_word_partial('support'))
+
+        if genre_comedy:
+            corpus = corpus.filter(lambda x: x.contains_word('comedy'))
+        elif genre_drama:
+            corpus = corpus.filter(lambda x: x.contains_word('drama'))
+        # elif genre_animated:
+        #     corpus = corpus.filter(lambda x: x.contains_word('coco'))
+
+
+        if winner_is_television:
+            corpus = corpus.filter(lambda x: x.contains_word_partial('tele'))
+        else:
+            corpus = corpus.filter(lambda x: x.not_contains_partial('tele'))
+
+
+
+
+        winner_is_movie = not (winner_is_actor or winner_is_actress or winner_is_director)
+
+        # print("winner")
+
+        candidates = []
+
+        for tweet in corpus:
+            # print(tweet)
+            candidate = tweet.re_findall(r'(\b[A-Z][\w,]*(?:\s+\b[A-Z][\w,]*)+)\s')
+            # print(candidate)
+
+            
+            for c in candidate:
+                #print(c)
+                if winner_is_movie != is_person(c, self.d) and is_not_award_name(c, award_tokens) and c not in [k[0][0] for k in prior_knowledge if len(k) > 0]:
+                    candidates.append(c)
+            # if len(candidate) > 0 and (winner_is_movie != is_person(candidate[0], self.d)):# and is_not_award_name(candidate[0], award_tokens):
+            #     print(candidate)
+            #     candidates += candidate
+
+        cand_counter = Counter(candidates)
+        # print(cand_counter.most_common(10))
+        return cand_counter.most_common(4) + prior_knowledge[0]
 
 
 
@@ -200,7 +328,7 @@ class Wizard():
     def __get_winners(self, award_tokens):
 
         corpus = self.corpus_contain_best_win.filter(lambda x: x.contains_any(award_tokens)).filter(
-            lambda x: x.contains_any(award_tokens[1:]))
+             lambda x: x.contains_any(award_tokens[1:]))
 
         winner_is_actress = True if any(token in ['actress'] for token in award_tokens) else False
         winner_is_actor = True if any(token in ['actor'] for token in award_tokens) else False
@@ -249,11 +377,15 @@ class Wizard():
         for tweet in corpus:
             # print(tweet)
             candidate = tweet.re_findall(r'(\b[A-Z][\w,]*(?:\s+\b[A-Z][\w,]*)+)\s+(?:win|won)')
-            # print(candidate)
+            # for c in candidate:
+                # if winner_is_movie != is_person(c, self.d) and is_not_award_name(c, award_tokens):
 
-            if len(candidate) > 0 and winner_is_movie != is_person(candidate[0], self.d) and is_not_award_name(candidate[0], award_tokens):
-
-                candidates += candidate
+            # if len(candidate) > 0 and winner_is_movie != is_person(candidate[0], self.d) and is_not_award_name(candidate[0], award_tokens):
+            #     candidates += candidate
+            for c in candidate:
+                # print(c)
+                if winner_is_movie != is_person(c, self.d) and is_not_award_name(c, award_tokens):
+                    candidates.append(c)
 
         cand_counter = Counter(candidates)
         # print(cand_counter.most_common(10))

@@ -13,17 +13,27 @@ def strip_common_list(tokens, char_list=",'"):
 def is_person(entity, d):
     # STOP_WORDS = ['for','in','-','–','or','a', 'the', 'I']
     # ia = IMDb()
+    # print('best' in d)
     words = entity.split()
     for w in words:
+        # print(w.lower())
         if w.lower() in d:
+            # print(w.lower())
             return False
+    # print(entity)
     return True
 
     #return len(ia.search_person(entity)) > 0 or entity.lower != "golden globe" or entity.lower != "golden globes"
     # return len(remove_stopwords) == 2 and entity.lower != "golden globe" and entity.lower != "golden globes" and len[]
 def is_not_award_name(entity, award_tokens):
     # print(' '.join(award_tokens) in entity.lower())
-    return not ' '.join(award_tokens) in entity.lower() and not 'golden globe' in entity.lower() and not 'golden globes' in entity.lower()
+    split_entity = entity.split()
+    split_entity = [e.lower() for e in split_entity]
+    # print(split_entity)
+    for a in award_tokens + ['golden', 'globes', 'globe', 'best']:
+        if a in split_entity:
+            return False
+    return True
 
 def get_list_of_words(inputFileName):
     data = []
@@ -33,7 +43,8 @@ def get_list_of_words(inputFileName):
         for row in test:
             #pp.pprint(row)
             for word in row:
-                data.append(word)
+                if word != 'moss':
+                    data.append(word)
 
     csvfile.close()
     #pp.pprint(data)
